@@ -1,31 +1,46 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app dark>
+    <v-content>
+      <router-view :snack="showSnackMethod"></router-view>
+    </v-content>
+    <v-snackbar :color="snackColor" v-model="showSnack" multi-line top right>
+      {{ snackText }}
+      <v-btn color="white" icon @click="showSnack = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
+import Login from "./components/Login";
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+  name: "App",
+  components: {
+    Login
+  },
+  data: () => ({
+    showSnack: false,
+    snackColor: "",
+    snackText: true
+  }),
+  methods: {
+    showSnackMethod(text, type) {
+      switch (type) {
+        case "success":
+          this.snackColor = "green darken-2";
+          break;
+        case "error":
+          this.snackColor = "red darken-2";
+          break;
+        default:
+          this.snackColor = "";
+      }
+      console.log("snack----");
+      this.snackText = text;
+      this.showSnack = true;
+    }
+  }
+};
+</script>
